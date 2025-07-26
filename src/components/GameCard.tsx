@@ -154,7 +154,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direct
           backdropFilter: 'blur(10px)',
           boxShadow: isStacked 
             ? '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-            : '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1)'
+            : '0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 10px 20px -5px rgba(0, 0, 0, 0.3)'
         }}>
         {/* Title at the top */}
         <div className="text-center mb-6 mt-10">
@@ -165,7 +165,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direct
         
         {/* Game-specific content */}
         {game.title === "Spelling Wasp" && (
-          <div className="flex-1 flex items-center justify-center w-full h-full rounded-2xl overflow-hidden card-screen">
+          <div className="flex-1 flex items-center justify-center w-full h-full rounded-2xl overflow-hidden card-screen" style={{ paddingTop: '-3rem' }}>
             <img 
               src="/Assets/Art/spellingwasp.png" 
               alt="Spelling Wasp" 
@@ -174,7 +174,8 @@ const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direct
               }`}
               style={{
                 filter: 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 3px 8px rgba(0, 0, 0, 0.1))',
-                transform: `translateY(${scrolling ? (direction === 'down' ? 5 : -5) : 0}px)`
+                transform: `translateY(${scrolling ? (direction === 'down' ? 5 : -5) : 0}px)`,
+                marginTop: '-3rem'
               }}
             />
           </div>
