@@ -1,0 +1,218 @@
+/* Spelling Wasp Game Styles */
+.game-container {
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    overflow: visible;
+    position: relative;
+    margin: 0 auto;
+}
+
+.question-counter {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.timer-container {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1000;
+}
+
+.timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d84315, #e65100);
+    width: 100%;
+    transition: width 2s linear;
+    position: relative;
+    z-index: 1001;
+}
+
+.question-container {
+    padding: 40px 30px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.question-container.fade-out {
+    opacity: 0;
+}
+
+.question-image {
+    width: 200px;
+    height: 150px;
+    background: #f0f0f0;
+    border: 3px dashed #ccc;
+    margin: 0 auto 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.question-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.options-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.option-button {
+    padding: 15px 20px;
+    border: 3px solid #ddd;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.option-button:hover:not(:disabled) {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.option-button.correct {
+    background: #2ecc71;
+    border-color: #27ae60;
+    color: white;
+    animation: correctPulse 0.6s ease;
+}
+
+.option-button.incorrect {
+    background: #e74c3c;
+    border-color: #c0392b;
+    color: white;
+    animation: incorrectShake 0.6s ease;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes incorrectShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.wasp-container {
+    height: 60px;
+    background: linear-gradient(90deg, #ffeaa7, #fdcb6e);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.wasp {
+    width: 30px;
+    height: 30px;
+    background: #f39c12;
+    border-radius: 50% 0 50% 0;
+    position: absolute;
+    transition: left 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transform: rotate(-45deg);
+    animation: waspFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes waspFloat {
+    0% { transform: rotate(-45deg) translateY(0px); }
+    100% { transform: rotate(-45deg) translateY(-3px); }
+}
+
+.human {
+    width: 30px;
+    height: 30px;
+    background: #3498db;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.progress-bar {
+    height: 4px;
+    background: #d84315;
+    width: calc(100% - 100px);
+    margin: 0 50px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.game-over {
+    text-align: center;
+    padding: 60px 30px;
+}
+
+.game-over h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.score {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.restart-btn {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
+} 

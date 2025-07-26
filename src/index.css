@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Time-of-day theme backgrounds */
+.theme-sunrise {
+  @apply bg-gradient-to-b from-[#FFF1EB] via-[#FFD6C0] to-[#FFB347] text-gray-800;
+}
+.theme-morning {
+  @apply bg-gradient-to-b from-[#D0EBFF] via-[#B0D4FF] to-[#A0C4FF] text-gray-800;
+}
+.theme-noon {
+  @apply bg-gradient-to-b from-[#90CAF9] via-[#64B5F6] to-[#42A5F5] text-gray-900;
+}
+.theme-afternoon {
+  @apply bg-gradient-to-b from-[#87CEEB] from-20% via-[#FFA07A] via-60% to-[#FF8C42] to-80% text-gray-800;
+}
+.theme-sunset {
+  @apply bg-gradient-to-b from-[#FF6B35] via-[#F7931E] to-[#8B5CF6] text-white;
+}
+.theme-night {
+  @apply bg-gradient-to-b from-[#1A1A40] via-[#2E1F57] to-[#3C2A80] text-white;
+}
