@@ -4,15 +4,15 @@ import './SpellingWaspGame.css';
 const quizData = {
   totalQuestions: 9,
   questions: [
-    { id: 1, image: 'cake.jpg', question: 'How do you spell this word?', options: ['Cake', 'Cacke', 'Caek', 'Cakke'], correctAnswer: 0 },
-    { id: 2, image: 'cookie.jpg', question: 'How do you spell this word?', options: ['Cookie', 'Cooky', 'Cokie', 'Cookee'], correctAnswer: 0 },
-    { id: 3, image: 'brownie.jpg', question: 'How do you spell this word?', options: ['Brownie', 'Brownee', 'Browny', 'Browinie'], correctAnswer: 0 },
-    { id: 4, image: 'pie.jpg', question: 'How do you spell this word?', options: ['Pie', 'Pye', 'Pee', 'Piae'], correctAnswer: 0 },
-    { id: 5, image: 'pudding.jpg', question: 'How do you spell this word?', options: ['Pudding', 'Puding', 'Puddding', 'Puddding'], correctAnswer: 0 },
-    { id: 6, image: 'icecream.jpg', question: 'How do you spell this word?', options: ['Icecream', 'Ice cram', 'Icedream', 'Icecreem'], correctAnswer: 0 },
-    { id: 7, image: 'muffin.jpg', question: 'How do you spell this word?', options: ['Muffin', 'Mufin', 'Muphinn', 'Muffen'], correctAnswer: 0 },
-    { id: 8, image: 'tart.jpg', question: 'How do you spell this word?', options: ['Tart', 'Tairt', 'Tarte', 'Turt'], correctAnswer: 0 },
-    { id: 9, image: 'donut.jpg', question: 'How do you spell this word?', options: ['Donut', 'Doughnut', 'Donutt', 'Donat'], correctAnswer: 1 },
+    { id: 1, image: 'ganache.jpg', question: 'How do you spell this word?', options: ['Ganache', 'Ganash', 'Ganashe', 'Ganachee'], correctAnswer: 0 },
+    { id: 2, image: 'truffle.jpg', question: 'How do you spell this word?', options: ['Truffle', 'Truffel', 'Trufflle', 'Trufle'], correctAnswer: 0 },
+    { id: 3, image: 'praline.jpg', question: 'How do you spell this word?', options: ['Praline', 'Pralene', 'Preline', 'Praleen'], correctAnswer: 0 },
+    { id: 4, image: 'nougat.jpg', question: 'How do you spell this word?', options: ['Nougat', 'Nouget', 'Nugat', 'Noughat'], correctAnswer: 0 },
+    { id: 5, image: 'fondant.jpg', question: 'How do you spell this word?', options: ['Fondant', 'Fondent', 'Fondannt', 'Fondannt'], correctAnswer: 0 },
+    { id: 6, image: 'gianduja.jpg', question: 'How do you spell this word?', options: ['Gianduja', 'Giandua', 'Janduja', 'Gianduja'], correctAnswer: 0 },
+    { id: 7, image: 'couverture.jpg', question: 'How do you spell this word?', options: ['Couverture', 'Couvurture', 'Couverchure', 'Coverature'], correctAnswer: 0 },
+    { id: 8, image: 'bavarian.jpg', question: 'How do you spell this word?', options: ['Bavarian', 'Baverian', 'Bavarian', 'Bavaran'], correctAnswer: 0 },
+    { id: 9, image: 'chocolatier.jpg', question: 'How do you spell this word?', options: ['Chocolatier', 'Chocolater', 'Chocolaiteer', 'Chocolatir'], correctAnswer: 0 },
   ],
 };
 

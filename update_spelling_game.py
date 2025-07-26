@@ -25,12 +25,20 @@ def generate_spelling_quiz(theme_word):
     IMPORTANT RULES:
     - Do NOT use any emojis or special characters
     - Return ONLY valid JSON, no explanations or markdown
-    - Use simple, common words related to the theme
+    - Choose DIFFICULT words to spell within the theme category
+    - Focus on words that are commonly misspelled or have tricky spelling patterns
+    - Include words with silent letters, double consonants, unusual vowel combinations, or foreign origins
     - Make sure the correctAnswer index matches the correct spelling in options
     - ALL options must be properly capitalized (first letter uppercase, rest lowercase)
     - ALL options must have proper spacing (no extra spaces, no missing spaces)
     - The correct answer should be the standard spelling of the word
-    - Incorrect options should be realistic misspellings
+    - Incorrect options should be realistic misspellings that people commonly make
+    
+    Examples of difficult words by theme:
+    - Animals: rhinoceros, hippopotamus, chimpanzee, orangutan, platypus
+    - Food: bouillabaisse, ratatouille, bruschetta, gnocchi, quiche
+    - Sports: gymnastics, synchronized, championship, tournament, referee
+    - Nature: chrysanthemum, photosynthesis, metamorphosis, precipitation, atmosphere
     
     Return the full output as valid JSON in this exact format:
     {{

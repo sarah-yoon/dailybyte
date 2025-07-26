@@ -27,8 +27,8 @@ const games: Game[] = [
   },
   {
     id: 2,
-    title: "Neon Runner",
-    description: "Race through futuristic cityscapes in this high-speed endless runner with stunning neon visuals.",
+    title: "Game #2",
+    description: "Fake game",
     genre: "Arcade",
     players: "1 Player",
     duration: "Quick sessions",
@@ -36,8 +36,8 @@ const games: Game[] = [
   },
   {
     id: 3,
-    title: "Mind Maze",
-    description: "Test your intellect with increasingly complex puzzles that will challenge your problem-solving skills.",
+    title: "Game #3",
+    description: "Fake game",
     genre: "Puzzle",
     players: "1-2 Players",
     duration: "1-3 hours",
@@ -45,12 +45,30 @@ const games: Game[] = [
   },
   {
     id: 4,
-    title: "Garden Builder",
-    description: "Create and nurture your dream garden in this relaxing simulation game with beautiful seasonal changes.",
+    title: "Game #4",
+    description: "Fake game",
     genre: "Simulation",
     players: "1 Player",
     duration: "Open-ended",
     difficulty: "Easy"
+  },
+  {
+    id: 5,
+    title: "Game #5",
+    description: "Fake game",
+    genre: "Action",
+    players: "1-4 Players",
+    duration: "30-60 minutes",
+    difficulty: "Medium"
+  },
+  {
+    id: 6,
+    title: "Game #6",
+    description: "Fake game",
+    genre: "Strategy",
+    players: "2-6 Players",
+    duration: "2-4 hours",
+    difficulty: "Hard"
   }
 ];
 
@@ -138,6 +156,13 @@ function App() {
       setNewDayText('');
       setIsNewDayModalOpen(false);
     }
+  };
+
+  // Function to capitalize first letter of each word
+  const capitalizeWords = (text: string): string => {
+    return text.split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    ).join(' ');
   };
 
   const handleResetTheme = async () => {
@@ -309,7 +334,7 @@ function App() {
           games={games} 
           onGameSelect={handleGameSelect} 
           theme={theme} 
-          todayTheme={lastNewDaySubmission || 'Desserts'}
+          todayTheme={capitalizeWords(lastNewDaySubmission || 'Desserts')}
         />
       ) : (
         <GameDetail game={selectedGame} onBack={handleBackToHome} theme={theme} />
