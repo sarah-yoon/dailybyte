@@ -21,3 +21,22 @@
 .theme-night {
   @apply bg-gradient-to-b from-[#1A1A40] via-[#2E1F57] to-[#3C2A80] text-white;
 }
+
+/* Card screen gradient */
+.card-screen {
+  background: linear-gradient(to bottom, #fffaf4, #fef3e6);
+}
+
+/* Floating animation for game icons */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

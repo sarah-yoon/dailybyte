@@ -19,7 +19,7 @@ const games: Game[] = [
   {
     id: 1,
     title: "Spelling Wasp",
-    description: "Challenge your mind in a retro-inspired word game where quick thinking and sharp spelling are your only defense against a swarm of stinging surprises",
+    description: "Try to spell your way out of the wasp's wrath. Hurry or else it will catch up to you, and next thing you know... x__x",
     genre: "Adventure",
     players: "1 Player",
     duration: "2-4 hours",

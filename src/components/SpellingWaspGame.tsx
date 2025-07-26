@@ -196,10 +196,54 @@ const SpellingWaspGame: React.FC<SpellingWaspGameProps> = ({ theme, gameStarted,
   const [timerTransition, setTimerTransition] = useState<'none' | 'width 2s linear'>('none');
   const [fadeOut, setFadeOut] = useState(false);
 
+  // Demo state for preview
+  const [demoQuestion, setDemoQuestion] = useState(0);
+  const [demoScore, setDemoScore] = useState(0);
+  const [demoWaspPosition, setDemoWaspPosition] = useState(0);
+  const [demoTimerWidth, setDemoTimerWidth] = useState('100%');
+
+  // Demo data for gameplay preview
+  const demoQuestions = [
+    { word: '🍕', emoji: '🍕', options: ['Pizza', 'Piza', 'Pizzaa', 'Pizaa'], correct: 0 },
+    { word: '🍦', emoji: '🍦', options: ['Ice Cream', 'Icecream', 'Ice Creamm', 'Icee Cream'], correct: 0 },
+    { word: '🍔', emoji: '🍔', options: ['Burger', 'Burgr', 'Burgger', 'Burgerr'], correct: 0 },
+    { word: '🍰', emoji: '🍰', options: ['Cake', 'Cakke', 'Cakee', 'Caake'], correct: 0 },
+  ];
+
   const waspInterval = useRef<ReturnType<typeof setInterval>|null>(null);
   const timerTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
   const fadeTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
+
+  // Demo animation loop
+  useEffect(() => {
+    if (gameStarted) return; // Only run demo when game hasn't started
+
+    const demoInterval = setInterval(() => {
+      setDemoQuestion(prev => (prev + 1) % demoQuestions.length);
+      setDemoScore(prev => Math.min(prev + 1, 4));
+      setDemoWaspPosition(prev => Math.max(0, prev - 50));
+      // Reset timer for new question
+      setDemoTimerWidth('100%');
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(demoInterval);
+  }, [gameStarted, demoQuestions.length]);
+
+  // Demo timer effect
+  useEffect(() => {
+    if (gameStarted) return;
+
+    const timerInterval = setInterval(() => {
+      setDemoTimerWidth(prev => {
+        const currentWidth = parseFloat(prev);
+        if (currentWidth <= 0) return '0%';
+        return `${Math.max(0, currentWidth - 3.33)}%`; // Decrease by ~3.33% every 100ms to complete in 3 seconds
+      });
+    }, 100);
+
+    return () => clearInterval(timerInterval);
+  }, [gameStarted, demoQuestion]);
 
   // Wasp movement effect
   useEffect(() => {
@@ -334,9 +378,69 @@ const SpellingWaspGame: React.FC<SpellingWaspGameProps> = ({ theme, gameStarted,
       )}
       {!gameStarted ? (
         // Title and Play Button Screen
-        <div className="question-container flex items-center justify-center">
-          <div className="text-center">
-            <h1 className={`text-4xl font-bold mb-8 ${getTitleColor(theme)}`}>{gameTitle}</h1>
+        <div className="question-container flex flex-col items-center justify-center">
+          <div className="text-center mb-6">
+            <h1 className={`text-4xl font-bold mb-6 ${getTitleColor(theme)}`}>{gameTitle}</h1>
+            
+            {/* Demo Section */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-200/50 p-4 mb-6 mx-auto" style={{ maxWidth: '400px', width: '400px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1)' }}>
+              <h2 className={`text-2xl font-black mb-4 text-center ${getTitleColor(theme)}`}>
+                Demo Preview
+              </h2>
+              
+              {/* Demo Gameplay */}
+              <div className="space-y-3">
+                {/* Score */}
+                <div className="flex justify-center items-center text-sm">
+                  <div className="font-semibold text-gray-700">
+                    Score: {demoScore}/4
+                  </div>
+                </div>
+
+                {/* Demo Timer Bar */}
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2 demo-timer-container">
+                  <div 
+                    className="h-1.5 rounded-full transition-all duration-100 demo-timer-bar"
+                    style={{ 
+                      width: demoTimerWidth,
+                      background: getTimerBarBg(theme)
+                    }}
+                  ></div>
+                </div>
+
+                {/* Current Question */}
+                <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg p-3 border border-orange-200">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                    How do you spell this word?
+                  </h3>
+                  <div className="text-4xl font-bold text-center mb-3">
+                    {demoQuestions[demoQuestion].emoji}
+                  </div>
+                  
+                  {/* Options */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {demoQuestions[demoQuestion].options.map((option, index) => (
+                      <button
+                        key={index}
+                        className={`p-2 rounded-md text-xs font-medium transition-all duration-300 ${
+                          index === demoQuestions[demoQuestion].correct
+                            ? 'bg-green-100 text-green-800 border border-green-300'
+                            : 'bg-gray-100 text-gray-700 border border-gray-200'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Demo Status */}
+                <div className="text-center text-xs text-gray-500">
+                  <p>pretend the wasp is chasing you</p>
+                </div>
+              </div>
+            </div>
+            
             <button
               className={`${getPlayButtonBg(theme)} text-white text-xl font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition`}
               onClick={onGameStart}
