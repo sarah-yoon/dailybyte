@@ -1,7 +1,7 @@
 //make the users swipe through the games list like 
 //if the user finishes it shoudl say
 //order based on what the user like
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GamesList from './components/GamesList';
 import GameDetail from './components/GameDetail';
 
@@ -78,7 +78,26 @@ function App() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isNewDayModalOpen, setIsNewDayModalOpen] = useState(false);
   const [newDayText, setNewDayText] = useState('');
+  const [lastNewDaySubmission, setLastNewDaySubmission] = useState<string>('');
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
   const theme = testTheme || getThemeByTime();
+
+  // On mount, load theme from localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('todayTheme');
+    if (savedTheme) {
+      setLastNewDaySubmission(savedTheme);
+    }
+  }, []);
+
+  // When lastNewDaySubmission changes, save to localStorage
+  useEffect(() => {
+    if (lastNewDaySubmission) {
+      localStorage.setItem('todayTheme', lastNewDaySubmission);
+    } else {
+      localStorage.removeItem('todayTheme');
+    }
+  }, [lastNewDaySubmission]);
 
   const handleGameSelect = (game: Game) => {
     setSelectedGame(game);
@@ -90,6 +109,64 @@ function App() {
     setSelectedGame(null);
   };
 
+  const handleNewDaySubmit = async () => {
+    if (!newDayText.trim()) return;
+    
+    setIsGeneratingQuiz(true);
+    setLastNewDaySubmission(newDayText);
+    
+    try {
+      // Call the Python script to generate new quiz data
+      const response = await fetch('/api/generate-quiz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ theme: newDayText.trim() }),
+      });
+      
+      if (response.ok) {
+        console.log('✅ Quiz generated successfully for theme:', newDayText);
+        // The Python script will have updated the SpellingWaspGame.tsx file
+      } else {
+        console.error('❌ Failed to generate quiz');
+      }
+    } catch (error) {
+      console.error('Error generating quiz:', error);
+    } finally {
+      setIsGeneratingQuiz(false);
+      setNewDayText('');
+      setIsNewDayModalOpen(false);
+    }
+  };
+
+  const handleResetTheme = async () => {
+    setIsGeneratingQuiz(true);
+    setLastNewDaySubmission('');
+    
+    try {
+      // Call the Python script to reset quiz data back to desserts
+      const response = await fetch('/api/generate-quiz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ theme: 'Desserts' }),
+      });
+      
+      if (response.ok) {
+        console.log('✅ Quiz reset successfully to desserts');
+        // The Python script will have updated the SpellingWaspGame.tsx file
+      } else {
+        console.error('❌ Failed to reset quiz');
+      }
+    } catch (error) {
+      console.error('Error resetting quiz:', error);
+    } finally {
+      setIsGeneratingQuiz(false);
+    }
+  };
+
   return (
     <div className={`theme-${theme} min-h-screen relative`}>
       {/* Peekable Testing Panel */}
@@ -97,14 +174,9 @@ function App() {
         isPanelOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         {/* Panel */}
-        <div className="bg-white/90 backdrop-blur-md rounded-r-lg shadow-xl border border-gray-200/50 p-4 min-w-[200px]">
-          {/* Title */}
-          <h3 className="text-sm font-semibold text-gray-700 mb-4 text-center">
-            Testing Panel
-          </h3>
-          
-          {/* Theme Buttons */}
-          <div className="flex flex-col gap-2">
+        <div className="bg-white/90 backdrop-blur-md rounded-r-lg shadow-xl border border-gray-200/50 p-4 w-64">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Testing Panel</h3>
+          <div className="space-y-2">
             <button
               onClick={() => setTestTheme(testTheme === 'sunrise' ? null : 'sunrise')}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -171,6 +243,12 @@ function App() {
             >
               New Day
             </button>
+            <button
+              onClick={handleResetTheme}
+              className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-gray-400 text-white hover:bg-gray-500 shadow-lg"
+            >
+              Reset Today Theme
+            </button>
           </div>
         </div>
         
@@ -193,26 +271,31 @@ function App() {
               value={newDayText}
               onChange={(e) => setNewDayText(e.target.value)}
               placeholder="Enter new day text..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 text-black bg-white"
             />
             <div className="flex gap-3">
               <button
-                onClick={() => {
-                  // Handle submit logic here
-                  console.log('New day submitted:', newDayText);
-                  setNewDayText('');
-                  setIsNewDayModalOpen(false);
-                }}
-                className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                onClick={handleNewDaySubmit}
+                disabled={isGeneratingQuiz || !newDayText.trim()}
+                className={`flex-1 py-2 px-4 rounded-lg transition-colors font-medium ${
+                  isGeneratingQuiz || !newDayText.trim()
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
               >
-                Submit
+                {isGeneratingQuiz ? 'Generating Quiz...' : 'Submit'}
               </button>
               <button
                 onClick={() => {
                   setNewDayText('');
                   setIsNewDayModalOpen(false);
                 }}
-                className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                disabled={isGeneratingQuiz}
+                className={`flex-1 py-2 px-4 rounded-lg transition-colors font-medium ${
+                  isGeneratingQuiz
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                }`}
               >
                 Back
               </button>
@@ -222,7 +305,12 @@ function App() {
       )}
 
       {currentPage === 'home' ? (
-        <GamesList games={games} onGameSelect={handleGameSelect} theme={theme} />
+        <GamesList 
+          games={games} 
+          onGameSelect={handleGameSelect} 
+          theme={theme} 
+          todayTheme={lastNewDaySubmission || 'Desserts'}
+        />
       ) : (
         <GameDetail game={selectedGame} onBack={handleBackToHome} theme={theme} />
       )}

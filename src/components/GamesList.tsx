@@ -7,6 +7,7 @@ interface GamesListProps {
   games: Game[];
   onGameSelect: (game: Game) => void;
   theme: string;
+  todayTheme: string;
 }
 
 const getTitleColor = (theme: string) => {
@@ -66,7 +67,7 @@ const getSubtitleColor = (theme: string) => {
   }
 };
 
-const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme }) => {
+const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, todayTheme }) => {
   const { direction, scrolling, scrollVelocity } = useScrollDirection();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -235,7 +236,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme }) => 
           <div className="absolute -top-4 -right-4 w-20 h-10 bg-gray-300/80 rounded-sm transform rotate-12"></div>
           
           <div className="text-2xl font-medium text-gray-700">
-            <span className="font-semibold">Today:</span> Desserts
+            <span className="font-semibold">Today:</span> {todayTheme}
           </div>
         </div>
       </div>

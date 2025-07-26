@@ -4,15 +4,15 @@ import './SpellingWaspGame.css';
 const quizData = {
   totalQuestions: 9,
   questions: [
-    { id: 1, image: 'tiramisu.jpg', question: 'How do you spell this word?', options: ['Tiramisoo', 'Tiramisu', 'Tiramisou', 'Tiramisue'], correctAnswer: 1 },
-    { id: 2, image: 'cappuccino.jpg', question: 'How do you spell this word?', options: ['Capuccino', 'Cappucino', 'Cappuccino', 'Capucccino'], correctAnswer: 2 },
-    { id: 3, image: 'macaron.jpg', question: 'How do you spell this word?', options: ['Macaroon', 'Macarron', 'Macaron', 'Macarone'], correctAnswer: 2 },
-    { id: 4, image: 'espresso.jpg', question: 'How do you spell this word?', options: ['Expresso', 'Espresso', 'Espreso', 'Expressso'], correctAnswer: 1 },
-    { id: 5, image: 'cannoli.jpg', question: 'How do you spell this word?', options: ['Cannolli', 'Cannoli', 'Cannolee', 'Cannoly'], correctAnswer: 1 },
-    { id: 6, image: 'gelato.jpg', question: 'How do you spell this word?', options: ['Gellato', 'Gelatto', 'Gelato', 'Gellatto'], correctAnswer: 2 },
-    { id: 7, image: 'panna-cotta.jpg', question: 'How do you spell this word?', options: ['Panna Cotta', 'Panna-Cotta', 'Pannacotta', 'Panna-Cota'], correctAnswer: 1 },
-    { id: 8, image: 'affogato.jpg', question: 'How do you spell this word?', options: ['Affogatto', 'Afogato', 'Affogato', 'Affogatto'], correctAnswer: 2 },
-    { id: 9, image: 'profiterole.jpg', question: 'How do you spell this word?', options: ['Profiteroll', 'Profiterol', 'Profiterole', 'Profiteroles'], correctAnswer: 2 },
+    { id: 1, image: 'cake.jpg', question: 'How do you spell this word?', options: ['Cake', 'Cacke', 'Caek', 'Cakke'], correctAnswer: 0 },
+    { id: 2, image: 'cookie.jpg', question: 'How do you spell this word?', options: ['Cookie', 'Cooky', 'Cokie', 'Cookee'], correctAnswer: 0 },
+    { id: 3, image: 'brownie.jpg', question: 'How do you spell this word?', options: ['Brownie', 'Brownee', 'Browny', 'Browinie'], correctAnswer: 0 },
+    { id: 4, image: 'pie.jpg', question: 'How do you spell this word?', options: ['Pie', 'Pye', 'Pee', 'Piae'], correctAnswer: 0 },
+    { id: 5, image: 'pudding.jpg', question: 'How do you spell this word?', options: ['Pudding', 'Puding', 'Puddding', 'Puddding'], correctAnswer: 0 },
+    { id: 6, image: 'icecream.jpg', question: 'How do you spell this word?', options: ['Icecream', 'Ice cram', 'Icedream', 'Icecreem'], correctAnswer: 0 },
+    { id: 7, image: 'muffin.jpg', question: 'How do you spell this word?', options: ['Muffin', 'Mufin', 'Muphinn', 'Muffen'], correctAnswer: 0 },
+    { id: 8, image: 'tart.jpg', question: 'How do you spell this word?', options: ['Tart', 'Tairt', 'Tarte', 'Turt'], correctAnswer: 0 },
+    { id: 9, image: 'donut.jpg', question: 'How do you spell this word?', options: ['Donut', 'Doughnut', 'Donutt', 'Donat'], correctAnswer: 1 },
   ],
 };
 
