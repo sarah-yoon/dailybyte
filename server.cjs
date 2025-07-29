@@ -1,6 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3001;
@@ -59,6 +60,34 @@ app.post('/api/generate-quiz', async (req, res) => {
   } catch (error) {
     console.error('Error calling Python script:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// API endpoint to save quiz data
+app.post('/api/save-quiz-data', async (req, res) => {
+  const { quizData } = req.body;
+  
+  if (!quizData) {
+    return res.status(400).json({ error: 'Quiz data is required' });
+  }
+
+  console.log('Received quiz data save request');
+
+  try {
+    // Write the quiz data to the file
+    fs.writeFileSync('src/data/quizData.ts', quizData, 'utf8');
+    
+    console.log('Quiz data saved successfully');
+    res.json({ 
+      success: true, 
+      message: 'Quiz data saved successfully'
+    });
+  } catch (error) {
+    console.error('Error saving quiz data:', error);
+    res.status(500).json({ 
+      error: 'Failed to save quiz data',
+      details: error.message 
+    });
   }
 });
 

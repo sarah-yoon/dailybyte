@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import GamesList from './components/GamesList';
 import GameDetail from './components/GameDetail';
+import EditGameDataModal from './components/EditGameDataModal';
 
 export interface Game {
   id: number;
@@ -98,6 +99,7 @@ function App() {
   const [newDayText, setNewDayText] = useState('');
   const [lastNewDaySubmission, setLastNewDaySubmission] = useState<string>('');
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
+  const [isEditGameDataOpen, setIsEditGameDataOpen] = useState(false);
   const theme = testTheme || getThemeByTime();
 
   // On mount, load theme from localStorage
@@ -145,7 +147,8 @@ function App() {
       
       if (response.ok) {
         console.log('✅ Quiz generated successfully for theme:', newDayText);
-        // The Python script will have updated the SpellingWaspGame.tsx file
+        // The Python script will have updated the quiz data file
+        // Vite's hot module replacement should automatically reload the component
       } else {
         console.error('❌ Failed to generate quiz');
       }
@@ -274,6 +277,12 @@ function App() {
             >
               Reset Today Theme
             </button>
+            <button
+              onClick={() => setIsEditGameDataOpen(true)}
+              className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-purple-500 text-white hover:bg-purple-600 shadow-lg"
+            >
+              Edit Game Data
+            </button>
           </div>
         </div>
         
@@ -327,6 +336,13 @@ function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Edit Game Data Modal */}
+      {isEditGameDataOpen && (
+        <EditGameDataModal 
+          onClose={() => setIsEditGameDataOpen(false)} 
+        />
       )}
 
       {currentPage === 'home' ? (

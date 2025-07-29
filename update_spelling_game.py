@@ -2,6 +2,7 @@ import openai
 import json
 import re
 import sys
+import random
 
 # Step 1: Set your GPT-4o API key
 openai.api_key = "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"
@@ -17,7 +18,6 @@ def generate_spelling_quiz(theme_word):
     
     Create exactly 9 questions. Each question must have:
     - An "id" (from 1 to 9),
-    - An "image" field (use the lowercase word with .jpg, e.g., "apple.jpg"),
     - A "question" field that says: "How do you spell this word?",
     - An "options" list of 4 similar spellings (1 correct, 3 incorrect),
     - A "correctAnswer" index (0 to 3) that points to the correct option.
@@ -44,7 +44,7 @@ def generate_spelling_quiz(theme_word):
     {{
       "totalQuestions": 9,
       "questions": [
-        {{ "id": 1, "image": "word.jpg", "question": "How do you spell this word?", "options": ["Option1", "Option2", "Option3", "Option4"], "correctAnswer": 0 }}
+        {{ "id": 1, "question": "How do you spell this word?", "options": ["Option1", "Option2", "Option3", "Option4"], "correctAnswer": 0 }}
       ]
     }}
     """
@@ -81,6 +81,14 @@ def generate_spelling_quiz(theme_word):
                 cleaned_options.append(cleaned_option)
             question['options'] = cleaned_options
         
+        # Randomize the correct answer positions
+        for question in quiz_data['questions']:
+            correct_answer = question['options'][question['correctAnswer']]
+            # Shuffle the options
+            random.shuffle(question['options'])
+            # Find the new position of the correct answer
+            question['correctAnswer'] = question['options'].index(correct_answer)
+        
         return quiz_data
     except Exception as e:
         print(f"OpenAI API failed: {e}")
@@ -89,29 +97,32 @@ def generate_spelling_quiz(theme_word):
 
 def generate_typescript_quiz_data(quiz_data, theme_word):
     """
-    Generate TypeScript code that can replace the existing quizData in SpellingWaspGame.tsx
+    Generate TypeScript code that can replace the existing quizData in src/data/quizData.ts
     """
     if not quiz_data:
         return None
     
-    typescript_code = f"""const quizData = {{
+    typescript_code = f"""// Quiz data that can be dynamically updated
+export const quizData = {{
   totalQuestions: {quiz_data['totalQuestions']},
   questions: [
 """
     
     for question in quiz_data['questions']:
-        typescript_code += f"""    {{ id: {question['id']}, image: '{question['image']}', question: '{question['question']}', options: {question['options']}, correctAnswer: {question['correctAnswer']} }},
+        typescript_code += f"""    {{ id: {question['id']}, question: '{question['question']}', options: {question['options']}, correctAnswer: {question['correctAnswer']} }},
 """
     
     typescript_code += """  ],
 };
+
+export type QuizQuestion = typeof quizData.questions[number];
 """
     
     return typescript_code
 
-def update_spelling_game_file(theme_word, file_path="src/components/SpellingWaspGame.tsx"):
+def update_spelling_game_file(theme_word, file_path="src/data/quizData.ts"):
     """
-    Directly update the SpellingWaspGame.tsx file with new quiz data
+    Directly update the src/data/quizData.ts file with new quiz data
     """
     # Generate new quiz data using AI
     quiz = generate_spelling_quiz(theme_word)
@@ -130,24 +141,16 @@ def update_spelling_game_file(theme_word, file_path="src/components/SpellingWasp
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # Find and replace the quizData section
-        # More robust pattern that handles nested braces
-        pattern = r'const quizData = \{[\s\S]*?\};'
+                # Replace the entire file with new quiz data
+        new_content = new_quiz_data.strip()
         
-        if re.search(pattern, content, re.DOTALL):
-            # Replace the existing quizData
-            new_content = re.sub(pattern, new_quiz_data.strip(), content, flags=re.DOTALL)
-            
-            # Write the updated content back to the file
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(new_content)
-            
-            print(f"Successfully updated {file_path} with AI-generated quiz data for theme: {theme_word}")
-            print(f"Generated {len(quiz['questions'])} questions")
-            return True
-        else:
-            print("Could not find quizData in the file")
-            return False
+        # Write the updated content back to the file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        
+        print(f"Successfully updated {file_path} with AI-generated quiz data for theme: {theme_word}")
+        print(f"Generated {len(quiz['questions'])} questions")
+        return True
             
     except Exception as e:
         print(f"Error updating file: {e}")

@@ -17,7 +17,6 @@ def generate_spelling_quiz(theme_word):
     
     Create 9 questions. Each question must have:
     - An "id" (from 1 to 9),
-    - An "image" field (use the lowercase word with .jpg, e.g., "apple.jpg"),
     - A "question" field that says: "How do you spell this word?",
     - An "options" list of 4 similar spellings (1 correct, 3 incorrect),
     - A "correctAnswer" index (0 to 3) that points to the correct option.
@@ -67,7 +66,7 @@ const quizData = {{
 """
     
     for question in quiz_data['questions']:
-        typescript_code += f"""    {{ id: {question['id']}, image: '{question['image']}', question: '{question['question']}', options: {question['options']}, correctAnswer: {question['correctAnswer']} }},
+        typescript_code += f"""    {{ id: {question['id']}, question: '{question['question']}', options: {question['options']}, correctAnswer: {question['correctAnswer']} }},
 """
     
     typescript_code += """  ],

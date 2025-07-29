@@ -1,22 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './SpellingWaspGame.css';
-
-const quizData = {
-  totalQuestions: 9,
-  questions: [
-    { id: 1, image: 'ganache.jpg', question: 'How do you spell this word?', options: ['Ganache', 'Ganash', 'Ganashe', 'Ganachee'], correctAnswer: 0 },
-    { id: 2, image: 'truffle.jpg', question: 'How do you spell this word?', options: ['Truffle', 'Truffel', 'Trufflle', 'Trufle'], correctAnswer: 0 },
-    { id: 3, image: 'praline.jpg', question: 'How do you spell this word?', options: ['Praline', 'Pralene', 'Preline', 'Praleen'], correctAnswer: 0 },
-    { id: 4, image: 'nougat.jpg', question: 'How do you spell this word?', options: ['Nougat', 'Nouget', 'Nugat', 'Noughat'], correctAnswer: 0 },
-    { id: 5, image: 'fondant.jpg', question: 'How do you spell this word?', options: ['Fondant', 'Fondent', 'Fondannt', 'Fondannt'], correctAnswer: 0 },
-    { id: 6, image: 'gianduja.jpg', question: 'How do you spell this word?', options: ['Gianduja', 'Giandua', 'Janduja', 'Gianduja'], correctAnswer: 0 },
-    { id: 7, image: 'couverture.jpg', question: 'How do you spell this word?', options: ['Couverture', 'Couvurture', 'Couverchure', 'Coverature'], correctAnswer: 0 },
-    { id: 8, image: 'bavarian.jpg', question: 'How do you spell this word?', options: ['Bavarian', 'Baverian', 'Bavarian', 'Bavaran'], correctAnswer: 0 },
-    { id: 9, image: 'chocolatier.jpg', question: 'How do you spell this word?', options: ['Chocolatier', 'Chocolater', 'Chocolaiteer', 'Chocolatir'], correctAnswer: 0 },
-  ],
-};
-
-type QuizQuestion = typeof quizData.questions[number];
+import { quizData, type QuizQuestion } from '../data/quizData';
 
 const TIMER_DURATION = 2000;
 const FEEDBACK_DURATION = 1300;
@@ -195,6 +179,7 @@ const SpellingWaspGame: React.FC<SpellingWaspGameProps> = ({ theme, gameStarted,
   const [timerWidth, setTimerWidth] = useState('100%');
   const [timerTransition, setTimerTransition] = useState<'none' | 'width 2s linear'>('none');
   const [fadeOut, setFadeOut] = useState(false);
+  const [quizVersion, setQuizVersion] = useState(0); // Force re-render when quiz data changes
 
   // Demo state for preview
   const [demoQuestion, setDemoQuestion] = useState(0);
@@ -214,6 +199,11 @@ const SpellingWaspGame: React.FC<SpellingWaspGameProps> = ({ theme, gameStarted,
   const timerTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
   const fadeTimeout = useRef<ReturnType<typeof setTimeout>|null>(null);
+
+  // Force re-render when quiz data changes (Vite HMR should handle this)
+  useEffect(() => {
+    // This effect will trigger a re-render when the imported quizData changes
+  }, [quizData]);
 
   // Demo animation loop
   useEffect(() => {
@@ -477,7 +467,6 @@ const SpellingWaspGame: React.FC<SpellingWaspGameProps> = ({ theme, gameStarted,
                   background: getTimerBarBg(theme)
                 }}></div>
               </div>
-              <div className="question-image">Image: {question.image}</div>
               <div className="question-text">{question.question}</div>
               <div className="options-container">
                 {question.options.map((option, idx) => {
