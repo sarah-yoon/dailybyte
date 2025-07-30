@@ -1,6 +1,6 @@
 # DailyByte - Interactive Spelling Game
 
-A modern, fullstack React application featuring an interactive spelling game with AI-powered quiz generation and dynamic theming based on time of day.
+A modern, fullstack React application featuring an interactive spelling game with dynamic theming based on time of day.
 
 ## 🎮 Features
 
@@ -10,10 +10,7 @@ A modern, fullstack React application featuring an interactive spelling game wit
 - **Visual Feedback**: Real-time animations and progress indicators
 - **Score Tracking**: Track your performance across quiz sessions
 
-### AI Integration
-- **AI-Generated Quizzes**: Uses OpenAI API to generate spelling questions based on themes
-- **Dynamic Content**: Create new quiz themes through the "New Day" feature
-- **Smart Question Generation**: AI creates realistic spelling challenges with common misspellings
+
 
 ### Visual Design
 - **Time-Based Theming**: Automatic theme changes based on time of day (sunrise, morning, noon, afternoon, sunset, night)
@@ -32,7 +29,6 @@ A modern, fullstack React application featuring an interactive spelling game wit
 ### Prerequisites
 - **Node.js** (v16 or higher)
 - **Python** (v3.7 or higher)
-- **OpenAI API Key** (for AI quiz generation)
 
 ### Installation
 
@@ -52,11 +48,7 @@ A modern, fullstack React application featuring an interactive spelling game wit
    pip install -r requirements.txt
    ```
 
-4. **Set up environment variables**
-   Create a `.env` file in the root directory:
-   ```
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
+
 
 5. **Start the development server**
    ```bash
@@ -114,7 +106,6 @@ npm run lint         # Run ESLint
 ### Key Technologies
 - **Frontend**: React, TypeScript, Vite, Tailwind CSS
 - **Backend**: Node.js, Express
-- **AI**: OpenAI API, Python
 - **Styling**: Tailwind CSS with custom animations
 
 ## 🎨 Features in Detail
@@ -128,11 +119,7 @@ The application automatically changes its visual theme based on the current time
 - **Sunset** (7-8 PM): Warm orange and purple
 - **Night** (8 PM-5 AM): Deep purple tones
 
-### AI Quiz Generation
-- **Theme-based questions**: Generate quizzes based on any theme (animals, food, sports, etc.)
-- **Realistic misspellings**: AI creates common spelling mistakes as distractors
-- **Difficulty scaling**: Questions range from easy to challenging
-- **Dynamic content**: No two quizzes are exactly the same
+
 
 ### Interactive UI
 - **Smooth animations**: Fluid transitions between game states
@@ -154,7 +141,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- **OpenAI** for AI-powered quiz generation
 - **React** and **Vite** for the modern development experience
 - **Tailwind CSS** for the beautiful styling system
 - **Express** for the robust backend API
