@@ -58,6 +58,9 @@ A modern, fullstack React application featuring an interactive spelling game wit
 6. **Open your browser**
    Navigate to `http://localhost:3000`
 
+## Or use this link
+http://35.197.91.118/
+
 ## 🎯 How to Play
 
 ### Getting Started
@@ -144,3 +147,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **React** and **Vite** for the modern development experience
 - **Tailwind CSS** for the beautiful styling system
 - **Express** for the robust backend API
+
+
