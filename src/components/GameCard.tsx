@@ -139,7 +139,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direct
         {game.title === "Spelling Wasp" && (
           <div className="flex-1 flex items-center justify-center w-full h-full rounded-2xl overflow-hidden card-screen" style={{ paddingTop: '-3rem' }}>
             <img 
-              src="/Assets/Art/spellingwasp.png" 
+              src="/src/Assets/Art/spellingwasp.png" 
               alt="Spelling Wasp" 
               className={`max-w-full max-h-full object-contain rounded-lg transition-all duration-700 hover:scale-110 hover:rotate-2 transform-gpu ${
                 isInFocus ? 'animate-float' : ''
