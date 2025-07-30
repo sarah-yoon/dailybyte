@@ -1,194 +1,160 @@
-# DailyByte - Interactive Game Collection
+# DailyByte - Interactive Spelling Game
 
-A beautiful, theme-aware game collection with advanced swipeable card interface and AI-powered quiz generation.
+A modern, fullstack React application featuring an interactive spelling game with AI-powered quiz generation and dynamic theming based on time of day.
 
-## Features
+## 🎮 Features
 
-- **Swipeable Game Cards**: Advanced drag-to-dismiss interface with keyboard navigation
-- **Dynamic Themes**: Time-based themes (sunrise, morning, noon, afternoon, sunset, night)
-- **AI Quiz Generation**: Generate new Spelling Wasp questions using OpenAI GPT-4o
-- **Responsive Design**: Beautiful UI with smooth animations and transitions
+### Core Gameplay
+- **Spelling Wasp Game**: Interactive spelling quiz where players must answer questions before a wasp catches them
+- **Dynamic Difficulty**: Timer-based gameplay with increasing challenge
+- **Visual Feedback**: Real-time animations and progress indicators
+- **Score Tracking**: Track your performance across quiz sessions
 
-## Quick Start
+### AI Integration
+- **AI-Generated Quizzes**: Uses OpenAI API to generate spelling questions based on themes
+- **Dynamic Content**: Create new quiz themes through the "New Day" feature
+- **Smart Question Generation**: AI creates realistic spelling challenges with common misspellings
+
+### Visual Design
+- **Time-Based Theming**: Automatic theme changes based on time of day (sunrise, morning, noon, afternoon, sunset, night)
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Smooth Animations**: Fluid transitions and interactive elements
+- **Modern UI**: Clean, intuitive interface with Tailwind CSS
+
+### Interactive Features
+- **Swipe Navigation**: Swipe through game cards with touch or mouse
+- **Keyboard Controls**: Arrow key navigation support
+- **Theme Testing**: Built-in theme testing panel for development
+- **Game Data Editor**: Visual editor for modifying quiz questions and themes
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- Python (v3.7 or higher)
-- OpenAI API key
-
-### Environment Setup
-
-1. **Install Python dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Set up your API key**:
-   - Copy `.env.example` to `.env`
-   - Replace `your_openai_api_key_here` with your actual OpenAI API key
-   ```bash
-   cp .env.example .env
-   # Then edit .env with your API key
-   ```
+- **Node.js** (v16 or higher)
+- **Python** (v3.7 or higher)
+- **OpenAI API Key** (for AI quiz generation)
 
 ### Installation
 
-1. **Install dependencies**:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd dailybyte
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Start the full development environment** (both React and Express servers):
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables**
+   Create a `.env` file in the root directory:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+5. **Start the development server**
    ```bash
    npm run dev:full
    ```
 
-3. **Open your browser** to `http://localhost:5173`
+6. **Open your browser**
+   Navigate to `http://localhost:3000`
 
-## How to Use
+## 🎯 How to Play
 
-### Testing Panel
-- Click the handle on the left side of the screen to open the testing panel
-- Use theme buttons to test different visual themes
-- Use "New Day" to generate new quiz content
+### Getting Started
+1. **Launch the application** and you'll see the main game interface
+2. **Swipe through games** using touch gestures or arrow keys
+3. **Select "Spelling Wasp"** to start the spelling game
+4. **Click "Play"** to begin the quiz
 
-### New Day Feature
-1. Click "New Day" in the testing panel
-2. Enter a theme (e.g., "Fruits", "Animals", "Colors", "Food")
-3. Click "Submit"
-4. The system will:
-   - Call OpenAI GPT-4o to generate new spelling questions
-   - Update the Spelling Wasp game with new content
-   - Show a loading state during generation
+### Gameplay
+- **Answer spelling questions** before the timer runs out
+- **Watch the wasp** - it moves closer with each wrong answer
+- **Correct answers** push the wasp back, giving you more time
+- **Complete all questions** to win, or survive until the end
 
-### Game Navigation
-- **Swipe up/down** on game cards to navigate
-- **Arrow keys** (↑/↓) for keyboard navigation
-- **Click** on a card to view game details
-- **Loop navigation** at the ends of the list
+### Customization
+- **Edit Game Data**: Click "Edit Game Data" in the testing panel to modify quiz questions
+- **Change Today Theme**: Update the "Today:" label through the editor
+- **Test Themes**: Use the testing panel to preview different time-based themes
 
-## File Structure
+## 🛠️ Development
 
+### Project Structure
 ```
 dailybyte/
 ├── src/
-│   ├── components/
-│   │   ├── GamesList.tsx      # Swipeable game cards
-│   │   ├── GameCard.tsx       # Individual game card
-│   │   ├── GameDetail.tsx     # Game detail view
-│   │   └── SpellingWaspGame.tsx # Spelling game with quiz data
-│   ├── App.tsx                # Main app with New Day modal
-│   └── ...
-├── server.js                  # Express server for API calls
-├── update_spelling_game.py    # Python script for quiz generation
-├── generate_quiz.py           # Alternative quiz generator
-└── start-dev.js              # Development server launcher
+│   ├── components/     # React components
+│   ├── hooks/         # Custom React hooks
+│   ├── types/         # TypeScript type definitions
+│   ├── utils/         # Utility functions
+│   ├── constants/     # Application constants
+│   └── data/          # Game data files
+├── server.cjs         # Express API server
+├── update_spelling_game.py  # AI quiz generation
+└── generate_quiz.py   # Alternative quiz generator
 ```
 
-## API Integration
+### Available Scripts
+```bash
+npm run dev          # Start Vite dev server only
+npm run dev:full     # Start full stack (Vite + Express)
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
 
-The app uses a Node.js Express server to:
-1. Receive theme requests from the React frontend
-2. Call the Python script with the theme
-3. Update the SpellingWaspGame.tsx file with new quiz data
-4. Return success/error responses
-
-## Development
-
-### Running Individual Servers
-- **React only**: `npm run dev`
-- **Express only**: `node server.js`
-- **Both**: `npm run dev:full`
-
-### Quiz Generation
-- **Automatic**: Use "New Day" feature in the app
-- **Manual**: Run `python update_spelling_game.py` and enter a theme
-- **Generate TypeScript**: Run `python generate_quiz.py` for copy/paste code
-
-## Technologies Used
-
-- **Frontend**: React, TypeScript, Tailwind CSS, Vite
+### Key Technologies
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
 - **Backend**: Node.js, Express
-- **AI**: OpenAI GPT-4o API
-- **Python**: Scripts for quiz generation
-- **Animations**: CSS transitions, transforms, keyframes
+- **AI**: OpenAI API, Python
+- **Styling**: Tailwind CSS with custom animations
 
-## Deployment
+## 🎨 Features in Detail
 
-### Google Cloud Platform (GCP)
+### Time-Based Theming
+The application automatically changes its visual theme based on the current time:
+- **Sunrise** (5-9 AM): Warm orange tones
+- **Morning** (9-12 PM): Cool blue tones  
+- **Noon** (12-3 PM): Bright sky blue
+- **Afternoon** (3-7 PM): Mixed orange and blue
+- **Sunset** (7-8 PM): Warm orange and purple
+- **Night** (8 PM-5 AM): Deep purple tones
 
-#### Option 1: App Engine
-```bash
-# Install Google Cloud SDK
-# https://cloud.google.com/sdk/docs/install
+### AI Quiz Generation
+- **Theme-based questions**: Generate quizzes based on any theme (animals, food, sports, etc.)
+- **Realistic misspellings**: AI creates common spelling mistakes as distractors
+- **Difficulty scaling**: Questions range from easy to challenging
+- **Dynamic content**: No two quizzes are exactly the same
 
-# Initialize your project
-gcloud init
+### Interactive UI
+- **Smooth animations**: Fluid transitions between game states
+- **Responsive design**: Works on all screen sizes
+- **Touch-friendly**: Optimized for mobile and tablet use
+- **Keyboard accessible**: Full keyboard navigation support
 
-# Deploy to App Engine
-./deploy.sh
-```
+## 🤝 Contributing
 
-#### Option 2: Cloud Run (Recommended)
-```bash
-# Enable required APIs
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable run.googleapis.com
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-# Deploy using Cloud Build
-gcloud builds submit --config cloudbuild.yaml
-```
+## 📝 License
 
-#### Environment Variables
-Set your OpenAI API key in GCP:
-```bash
-gcloud app deploy app.yaml --set-env-vars OPENAI_API_KEY=your_api_key_here
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Local Production Build
-```bash
-npm run build
-npm start
-```
+## 🙏 Acknowledgments
 
-## Customization
-
-### Adding New Games
-1. Add game data to the `games` array in `App.tsx`
-2. Create a new game component in `src/components/`
-3. Add game logic and styling
-
-### Modifying Quiz Generation
-1. Edit the prompt in `update_spelling_game.py`
-2. Adjust the quiz structure in `SpellingWaspGame.tsx`
-3. Test with different themes
-
-### Theme Customization
-1. Modify theme functions in `SpellingWaspGame.tsx`
-2. Update CSS variables in `index.css`
-3. Add new theme options to the testing panel
-
-## Security
-
-### API Key Management
-- **Never commit API keys**: The `.env` file is in `.gitignore` and won't be uploaded to GitHub
-- **Use environment variables**: All API keys are loaded from environment variables
-- **Template file**: Use `.env.example` as a template for setting up your own environment
-
-## Troubleshooting
-
-### Common Issues
-- **Python not found**: Ensure Python is installed and in PATH
-- **API errors**: Check OpenAI API key in `.env` file
-- **Missing dependencies**: Run `pip install -r requirements.txt`
-- **File not found**: Ensure all files are in the correct locations
-- **Port conflicts**: Change ports in `server.js` and `vite.config.ts`
-
-### Debug Mode
-- Check browser console for frontend errors
-- Check terminal for backend errors
-- Use browser dev tools to inspect network requests
-
-## License
-
-This project is for educational and personal use.
+- **OpenAI** for AI-powered quiz generation
+- **React** and **Vite** for the modern development experience
+- **Tailwind CSS** for the beautiful styling system
+- **Express** for the robust backend API
