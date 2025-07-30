@@ -1,8 +1,13 @@
 import openai
 import json
+import os
+from dotenv import load_dotenv
 
-# Step 1: Set your GPT-4o API key
-openai.api_key = "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"
+# Load environment variables from .env file
+load_dotenv()
+
+# Step 1: Set your GPT-4o API key from environment variable
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def generate_spelling_quiz(theme_word):
     """

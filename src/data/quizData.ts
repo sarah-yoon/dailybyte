@@ -2,15 +2,15 @@
 export const quizData = {
   totalQuestions: 9,
   questions: [
-    { id: 1, question: 'How do you spell this word?', options: ["test","Eccleciastes","Ecclesiates","Ecclesiastes"], correctAnswer: 3 },
-    { id: 2, question: 'How do you spell this word?', options: ["Phillipians","Philipians","Philippians","Filippians"], correctAnswer: 2 },
-    { id: 3, question: 'How do you spell this word?', options: ["Deuteronomy","Deuteronemy","Deuteronamy","Deuteronimy"], correctAnswer: 0 },
-    { id: 4, question: 'How do you spell this word?', options: ["Habakuk","Habakkuk","Habakkuck","Habakuck"], correctAnswer: 1 },
-    { id: 5, question: 'How do you spell this word?', options: ["Lementations","Lamantations","Lamemtations","Lamentations"], correctAnswer: 3 },
-    { id: 6, question: 'How do you spell this word?', options: ["Nehum","Nahom","Naham","Nahum"], correctAnswer: 3 },
-    { id: 7, question: 'How do you spell this word?', options: ["Zephanaih","Zefaniah","Zephania","Zephaniah"], correctAnswer: 3 },
-    { id: 8, question: 'How do you spell this word?', options: ["Malichi","Malachy","Malachai","Malachi"], correctAnswer: 3 },
-    { id: 9, question: 'How do you spell this word?', options: ["Haggai","Hagai","Haggay","Haggiah"], correctAnswer: 0 },
+    { id: 1, question: 'How do you spell this word?', options: ['Cacoa', 'Cacao', 'Cocoa', 'Cocoa'], correctAnswer: 1 },
+    { id: 2, question: 'How do you spell this word?', options: ['Ganauche', 'Gannache', 'Ganash', 'Ganache'], correctAnswer: 3 },
+    { id: 3, question: 'How do you spell this word?', options: ['Pralin', 'Pralline', 'Praline', 'Pralinee'], correctAnswer: 2 },
+    { id: 4, question: 'How do you spell this word?', options: ['Trufflle', 'Truffel', 'Truffle', 'Trufle'], correctAnswer: 2 },
+    { id: 5, question: 'How do you spell this word?', options: ['Bonbon', 'Bonnbon', 'Bon bon', 'Bon-bon'], correctAnswer: 0 },
+    { id: 6, question: 'How do you spell this word?', options: ['Nouget', 'Nougat', 'Nougat', 'Nugat'], correctAnswer: 1 },
+    { id: 7, question: 'How do you spell this word?', options: ['Fondannt', 'Fondant', 'Fondent', 'Fonddant'], correctAnswer: 1 },
+    { id: 8, question: 'How do you spell this word?', options: ['Cuveture', 'Couveture', 'Couverture', 'Couvertture'], correctAnswer: 2 },
+    { id: 9, question: 'How do you spell this word?', options: ['Liquor', 'Liqueur', 'Liqeur', 'Liquer'], correctAnswer: 1 },
   ],
 };
 

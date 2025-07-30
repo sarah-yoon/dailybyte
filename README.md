@@ -14,7 +14,22 @@ A beautiful, theme-aware game collection with advanced swipeable card interface 
 ### Prerequisites
 - Node.js (v16 or higher)
 - Python (v3.7 or higher)
-- OpenAI API key (already configured in the scripts)
+- OpenAI API key
+
+### Environment Setup
+
+1. **Install Python dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Set up your API key**:
+   - Copy `.env.example` to `.env`
+   - Replace `your_openai_api_key_here` with your actual OpenAI API key
+   ```bash
+   cp .env.example .env
+   # Then edit .env with your API key
+   ```
 
 ### Installation
 
@@ -98,6 +113,44 @@ The app uses a Node.js Express server to:
 - **Python**: Scripts for quiz generation
 - **Animations**: CSS transitions, transforms, keyframes
 
+## Deployment
+
+### Google Cloud Platform (GCP)
+
+#### Option 1: App Engine
+```bash
+# Install Google Cloud SDK
+# https://cloud.google.com/sdk/docs/install
+
+# Initialize your project
+gcloud init
+
+# Deploy to App Engine
+./deploy.sh
+```
+
+#### Option 2: Cloud Run (Recommended)
+```bash
+# Enable required APIs
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable run.googleapis.com
+
+# Deploy using Cloud Build
+gcloud builds submit --config cloudbuild.yaml
+```
+
+#### Environment Variables
+Set your OpenAI API key in GCP:
+```bash
+gcloud app deploy app.yaml --set-env-vars OPENAI_API_KEY=your_api_key_here
+```
+
+### Local Production Build
+```bash
+npm run build
+npm start
+```
+
 ## Customization
 
 ### Adding New Games
@@ -115,11 +168,19 @@ The app uses a Node.js Express server to:
 2. Update CSS variables in `index.css`
 3. Add new theme options to the testing panel
 
+## Security
+
+### API Key Management
+- **Never commit API keys**: The `.env` file is in `.gitignore` and won't be uploaded to GitHub
+- **Use environment variables**: All API keys are loaded from environment variables
+- **Template file**: Use `.env.example` as a template for setting up your own environment
+
 ## Troubleshooting
 
 ### Common Issues
 - **Python not found**: Ensure Python is installed and in PATH
-- **API errors**: Check OpenAI API key in the Python scripts
+- **API errors**: Check OpenAI API key in `.env` file
+- **Missing dependencies**: Run `pip install -r requirements.txt`
 - **File not found**: Ensure all files are in the correct locations
 - **Port conflicts**: Change ports in `server.js` and `vite.config.ts`
 

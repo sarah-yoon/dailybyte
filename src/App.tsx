@@ -52,24 +52,6 @@ const games: Game[] = [
     players: "1 Player",
     duration: "Open-ended",
     difficulty: "Easy"
-  },
-  {
-    id: 5,
-    title: "Game #5",
-    description: "Fake game",
-    genre: "Action",
-    players: "1-4 Players",
-    duration: "30-60 minutes",
-    difficulty: "Medium"
-  },
-  {
-    id: 6,
-    title: "Game #6",
-    description: "Fake game",
-    genre: "Strategy",
-    players: "2-6 Players",
-    duration: "2-4 hours",
-    difficulty: "Hard"
   }
 ];
 

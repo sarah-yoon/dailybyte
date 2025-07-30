@@ -4,10 +4,16 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Serve static files from the React app build
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// API routes
+//app.use('/api', express.Router());
 
 // API endpoint to generate quiz data
 app.post('/api/generate-quiz', async (req, res) => {
@@ -96,7 +102,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Express server is running' });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Express server running on http://localhost:${PORT}`);
+// Catch-all handler: send back React's index.html file for any non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Express server running on http://0.0.0.0:${PORT}`);
   console.log('📡 API endpoint: POST /api/generate-quiz');
 }); 
