@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { quizData, type QuizQuestion } from '../data/quizData';
+import { quizData } from '../data/quizData';
+import { API_ENDPOINTS } from '../constants';
 
 interface EditGameDataModalProps {
   onClose: () => void;
+  onTodayThemeChange: (theme: string) => void;
+  currentTodayTheme: string;
 }
 
 interface EditableQuestion {
@@ -12,9 +15,11 @@ interface EditableQuestion {
   correctAnswer: number;
 }
 
-const EditGameDataModal: React.FC<EditGameDataModalProps> = ({ onClose }) => {
+const EditGameDataModal: React.FC<EditGameDataModalProps> = ({ onClose, onTodayThemeChange, currentTodayTheme }) => {
   const [questions, setQuestions] = useState<EditableQuestion[]>([]);
+  const [todayTheme, setTodayTheme] = useState<string>(currentTodayTheme);
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    todayTheme: false,
     spellingWasp: false
   });
   const [isSaving, setIsSaving] = useState(false);
@@ -29,6 +34,10 @@ const EditGameDataModal: React.FC<EditGameDataModalProps> = ({ onClose }) => {
     })));
   }, []);
 
+  useEffect(() => {
+    setTodayTheme(currentTodayTheme);
+  }, [currentTodayTheme]);
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -36,7 +45,7 @@ const EditGameDataModal: React.FC<EditGameDataModalProps> = ({ onClose }) => {
     }));
   };
 
-  const updateQuestion = (questionId: number, field: keyof EditableQuestion, value: any) => {
+  const updateQuestion = (questionId: number, field: keyof EditableQuestion, value: string | number) => {
     setQuestions(prev => prev.map(q => 
       q.id === questionId ? { ...q, [field]: value } : q
     ));
@@ -62,19 +71,35 @@ const EditGameDataModal: React.FC<EditGameDataModalProps> = ({ onClose }) => {
   const saveChanges = async () => {
     setIsSaving(true);
     try {
-      // Create the new quiz data structure
-      const newQuizData = {
-        totalQuestions: questions.length,
-        questions: questions.map(q => ({
-          id: q.id,
-          question: q.question,
-          options: q.options,
-          correctAnswer: q.correctAnswer
-        }))
-      };
+      // Update the today theme immediately
+      onTodayThemeChange(todayTheme);
 
-      // Convert to TypeScript code
-      const typescriptCode = `// Quiz data that can be dynamically updated
+      // Check if quiz data has been modified
+      const originalQuestions = quizData.questions;
+      const hasQuizChanges = questions.some((q, index) => {
+        const original = originalQuestions[index];
+        return (
+          q.question !== original.question ||
+          q.correctAnswer !== original.correctAnswer ||
+          !q.options.every((option, optIndex) => option === original.options[optIndex])
+        );
+      });
+
+      // Only save quiz data if there are actual changes
+      if (hasQuizChanges) {
+        // Create the new quiz data structure
+        const newQuizData = {
+          totalQuestions: questions.length,
+          questions: questions.map(q => ({
+            id: q.id,
+            question: q.question,
+            options: q.options,
+            correctAnswer: q.correctAnswer
+          }))
+        };
+
+        // Convert to TypeScript code
+        const typescriptCode = `// Quiz data that can be dynamically updated
 export const quizData = {
   totalQuestions: ${newQuizData.totalQuestions},
   questions: [
@@ -84,30 +109,31 @@ ${newQuizData.questions.map(q => `    { id: ${q.id}, question: '${q.question}', 
 
 export type QuizQuestion = typeof quizData.questions[number];`;
 
-      // Save to file
-      const response = await fetch('/api/save-quiz-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quizData: typescriptCode }),
-      });
+        // Save to file
+        const response = await fetch(API_ENDPOINTS.SAVE_QUIZ_DATA, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ quizData: typescriptCode }),
+        });
 
-      if (response.ok) {
-        console.log('✅ Quiz data saved successfully');
-        alert('Quiz data saved successfully! The game will reload with your changes.');
-        // Force a page reload to pick up the new quiz data
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-        onClose();
+        if (response.ok) {
+          console.log('✅ Quiz data saved successfully');
+          alert('Quiz data and today theme saved successfully!');
+        } else {
+          console.error('❌ Failed to save quiz data');
+          alert('Failed to save quiz data. Please try again.');
+        }
       } else {
-        console.error('❌ Failed to save quiz data');
-        alert('Failed to save quiz data. Please try again.');
+        // Only today theme was changed
+        alert('Today theme updated successfully!');
       }
+
+      onClose();
     } catch (error) {
-      console.error('Error saving quiz data:', error);
-      alert('Error saving quiz data. Please try again.');
+      console.error('Error saving data:', error);
+      alert('Error saving data. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -124,6 +150,43 @@ export type QuizQuestion = typeof quizData.questions[number];`;
           >
             ×
           </button>
+        </div>
+
+        {/* Today Theme Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => toggleSection('todayTheme')}
+            className="w-full flex justify-between items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+          >
+            <h4 className="text-lg font-semibold text-blue-800">Today Theme</h4>
+            <span className="text-blue-600">
+              {expandedSections.todayTheme ? '▼' : '▶'}
+            </span>
+          </button>
+
+          {expandedSections.todayTheme && (
+            <div className="mt-4 space-y-4">
+              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <div className="flex items-center justify-between mb-3">
+                  <h5 className="font-semibold text-gray-800">Today Label</h5>
+                </div>
+
+                <div className="mb-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Today Theme:</label>
+                  <input
+                    type="text"
+                    value={todayTheme}
+                    onChange={(e) => setTodayTheme(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter today's theme..."
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This will be displayed as "Today: [your theme]" in the main interface
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Spelling Wasp Section */}

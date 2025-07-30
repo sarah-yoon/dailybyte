@@ -1,71 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Game } from '../App';
+import { Game, Theme } from '../types';
 import GameCard from './GameCard';
 import { useScrollDirection } from '../hooks/useScrollDirection';
+import { getThemeConfig } from '../utils/themeUtils';
+import { DRAG_THRESHOLD, VELOCITY_THRESHOLD, ANIMATION_DURATION } from '../constants';
 
 interface GamesListProps {
   games: Game[];
   onGameSelect: (game: Game) => void;
-  theme: string;
+  theme: Theme;
   todayTheme: string;
 }
-
-const getTitleColor = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'text-orange-500';
-    case 'morning':
-      return 'text-blue-500';
-    case 'noon':
-      return 'text-sky-700';
-    case 'afternoon':
-      return 'text-sky-600';
-    case 'sunset':
-      return 'text-orange-800';
-    case 'night':
-      return 'text-purple-200';
-    default:
-      return 'text-gray-800';
-  }
-};
-
-const getSubtitle = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'You\'re up pretty early';
-    case 'morning':
-      return 'Wakey wakey';
-    case 'noon':
-      return 'Feeling bored?';
-    case 'afternoon':
-      return 'Is the day over yet?';
-    case 'sunset':
-      return 'What a day!';
-    case 'night':
-      return 'Don\'t stay up too late...';
-    default:
-      return 'Featured Games';
-  }
-};
-
-const getSubtitleColor = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'text-orange-400';
-    case 'morning':
-      return 'text-blue-400';
-    case 'noon':
-      return 'text-sky-600';
-    case 'afternoon':
-      return 'text-sky-500';
-    case 'sunset':
-      return 'text-yellow-200';
-    case 'night':
-      return 'text-purple-300';
-    default:
-      return 'text-rose-400';
-  }
-};
 
 const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, todayTheme }) => {
   const { direction, scrolling, scrollVelocity } = useScrollDirection();
@@ -76,23 +21,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Calculate smooth spacing based on scroll velocity
-  const getSpacingValue = () => {
-    if (!scrolling || scrollVelocity === 0) return 32; // Normal spacing when not scrolling
-    
-    // Map scroll velocity to spacing with more granular control
-    // Clamp velocity between 0 and 3 pixels per millisecond for more range
-    const clampedVelocity = Math.min(scrollVelocity, 3);
-    const normalizedVelocity = clampedVelocity / 3; // 0 to 1 with more precision
-    
-    // Interpolate spacing from 32px (normal) to 8px (minimum bunched)
-    // Use more intermediate steps for smoother transitions
-    const spacing = 32 - (normalizedVelocity * 24); // 24 = 32 - 8
-    
-    return Math.max(8, spacing); // Ensure spacing doesn't go below 8px
-  };
-
-  const spacingValue = getSpacingValue();
+  const themeConfig = getThemeConfig(theme);
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     if (isAnimating) return;
@@ -117,10 +46,9 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
     setIsDragging(false);
     
     // Determine if we should change cards based on drag distance and velocity
-    const threshold = 50; // Reduced from 100px to 50px for easier navigation
     const velocity = Math.abs(dragOffsetY) / 10; // simple velocity calculation
     
-    if (Math.abs(dragOffsetY) > threshold || velocity > 3) { // Reduced velocity threshold from 5 to 3
+    if (Math.abs(dragOffsetY) > DRAG_THRESHOLD || velocity > VELOCITY_THRESHOLD) {
       setIsAnimating(true);
       
       if (dragOffsetY > 0) {
@@ -147,7 +75,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
       // End animation after transition
       setTimeout(() => {
         setIsAnimating(false);
-      }, 300);
+      }, ANIMATION_DURATION);
     } else {
       // Snap back to current position
       setDragOffsetY(0);
@@ -168,7 +96,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           setDragOffsetY(0);
           setTimeout(() => {
             setIsAnimating(false);
-          }, 300);
+          }, ANIMATION_DURATION);
         }, 50);
       } else if (e.key === 'ArrowDown' && currentIndex === games.length - 1) {
         // Loop back to first game
@@ -179,7 +107,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           setDragOffsetY(0);
           setTimeout(() => {
             setIsAnimating(false);
-          }, 300);
+          }, ANIMATION_DURATION);
         }, 50);
       } else if (e.key === 'ArrowUp' && currentIndex > 0) {
         // Swipe down animation for previous card
@@ -190,7 +118,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           setDragOffsetY(0);
           setTimeout(() => {
             setIsAnimating(false);
-          }, 300);
+          }, ANIMATION_DURATION);
         }, 50);
       } else if (e.key === 'ArrowUp' && currentIndex === 0) {
         // Loop back to last game
@@ -201,7 +129,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           setDragOffsetY(0);
           setTimeout(() => {
             setIsAnimating(false);
-          }, 300);
+          }, ANIMATION_DURATION);
         }, 50);
       }
     };
@@ -243,18 +171,16 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
 
       {/* Header */}
       <div className="text-center mb-16">
-        <h1 className={`text-6xl font-bold mb-4 tracking-tight ${getTitleColor(theme)}`}>
-          daily<span className={getTitleColor(theme)}>byte</span>
+        <h1 className={`text-6xl font-bold mb-4 tracking-tight ${themeConfig.titleColor}`}>
+          daily<span className={themeConfig.titleColor}>byte</span>
         </h1>
       </div>
 
       {/* Swipeable Card Stack */}
       <div className="max-w-4xl mx-auto">
-        <h2 className={`text-3xl font-semibold mb-8 text-center ${getSubtitleColor(theme)}`}>
-          {getSubtitle(theme)}
+        <h2 className={`text-3xl font-semibold mb-8 text-center ${themeConfig.subtitleColor}`}>
+          {themeConfig.subtitle}
         </h2>
-        
-
 
         {/* Card Container */}
         <div 
@@ -268,8 +194,6 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           onTouchMove={handleDragMove}
           onTouchEnd={handleDragEnd}
         >
-
-
           {/* Previous Card (behind) */}
           {prevGame && (
             <div 
@@ -388,11 +312,9 @@ const GamesList: React.FC<GamesListProps> = ({ games, onGameSelect, theme, today
           )}
         </div>
 
-
-
         {/* Navigation Instructions */}
         <div className="text-center mt-6 text-sm font-bold">
-          <p className={`${getTitleColor(theme)}`}>
+          <p className={`${themeConfig.titleColor}`}>
             Swipe up/down or use arrow keys to navigate (↓ next, ↑ previous)
           </p>
         </div>

@@ -1,200 +1,40 @@
 //make the users swipe through the games list like 
 //if the user finishes it shoudl say
 //order based on what the user like
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import GamesList from './components/GamesList';
 import GameDetail from './components/GameDetail';
 import EditGameDataModal from './components/EditGameDataModal';
-
-export interface Game {
-  id: number;
-  title: string;
-  description: string;
-  genre: string;
-  players: string;
-  duration: string;
-  difficulty: string;
-}
-
-const games: Game[] = [
-  {
-    id: 1,
-    title: "Spelling Wasp",
-    description: "Try to spell your way out of the wasp's wrath. Hurry or else it will catch up to you, and next thing you know... x__x",
-    genre: "Adventure",
-    players: "1 Player",
-    duration: "2-4 hours",
-    difficulty: "Medium"
-  },
-  {
-    id: 2,
-    title: "Game #2",
-    description: "Fake game",
-    genre: "Arcade",
-    players: "1 Player",
-    duration: "Quick sessions",
-    difficulty: "Easy"
-  },
-  {
-    id: 3,
-    title: "Game #3",
-    description: "Fake game",
-    genre: "Puzzle",
-    players: "1-2 Players",
-    duration: "1-3 hours",
-    difficulty: "Hard"
-  },
-  {
-    id: 4,
-    title: "Game #4",
-    description: "Fake game",
-    genre: "Simulation",
-    players: "1 Player",
-    duration: "Open-ended",
-    difficulty: "Easy"
-  }
-];
-
-function getThemeByTime() {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 9) {
-    return 'sunrise';
-  } else if (hour >= 9 && hour < 12) {
-    return 'morning';
-  } else if (hour >= 12 && hour < 15) {
-    return 'noon';
-  } else if (hour >= 15 && hour < 19) {
-    return 'afternoon';
-  } else if (hour >= 19 && hour < 20) {
-    return 'sunset';
-  } else {
-    return 'night';
-  }
-}
+import { useAppState } from './hooks/useAppState';
+import { games } from './data/games';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'game'>('home');
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
-  const [testTheme, setTestTheme] = useState<string | null>(null);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [isNewDayModalOpen, setIsNewDayModalOpen] = useState(false);
-  const [newDayText, setNewDayText] = useState('');
-  const [lastNewDaySubmission, setLastNewDaySubmission] = useState<string>('');
-  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
-  const [isEditGameDataOpen, setIsEditGameDataOpen] = useState(false);
-  const theme = testTheme || getThemeByTime();
+  const {
+    // State
+    currentPage,
+    selectedGame,
+    testTheme,
+    isPanelOpen,
+    isNewDayModalOpen,
+    newDayText,
+    isGeneratingQuiz,
+    isEditGameDataOpen,
+    theme,
+    todayTheme,
 
-  // On mount, load theme from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('todayTheme');
-    if (savedTheme) {
-      setLastNewDaySubmission(savedTheme);
-    }
-  }, []);
+    // Actions
+    setTestTheme,
+    setIsPanelOpen,
+    setIsNewDayModalOpen,
+    setNewDayText,
+    setIsEditGameDataOpen,
+    handleGameSelect,
+    handleBackToHome,
+    handleNewDaySubmit,
+    handleResetTheme,
+  } = useAppState();
 
-  // When lastNewDaySubmission changes, save to localStorage
-  useEffect(() => {
-    if (lastNewDaySubmission) {
-      localStorage.setItem('todayTheme', lastNewDaySubmission);
-    } else {
-      localStorage.removeItem('todayTheme');
-    }
-  }, [lastNewDaySubmission]);
-
-  const handleGameSelect = (game: Game) => {
-    setSelectedGame(game);
-    setCurrentPage('game');
-  };
-
-  const handleBackToHome = () => {
-    setCurrentPage('home');
-    setSelectedGame(null);
-  };
-
-  const handleNewDaySubmit = async () => {
-    if (!newDayText.trim()) return;
-    
-    setIsGeneratingQuiz(true);
-    setLastNewDaySubmission(newDayText);
-    
-    try {
-      // Call the Python script to generate new quiz data
-      const response = await fetch('/api/generate-quiz', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ theme: newDayText.trim() }),
-      });
-      
-      if (response.ok) {
-        console.log('Quiz generated successfully for theme:', newDayText);
-        // The Python script will have updated the quiz data file
-        // Vite's hot module replacement should automatically reload the component
-      } else {
-        console.error('Failed to generate quiz');
-      }
-    } catch (error) {
-      console.error('Error generating quiz:', error);
-    } finally {
-      setIsGeneratingQuiz(false);
-      setNewDayText('');
-      setIsNewDayModalOpen(false);
-    }
-  };
-
-  // Function to capitalize first letter of each word
-  const capitalizeWords = (text: string): string => {
-    return text.split(' ').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    ).join(' ');
-  };
-
-  const handleResetTheme = async () => {
-    setIsGeneratingQuiz(true);
-    setLastNewDaySubmission('');
-    
-    try {
-      // Mock dessert quiz data
-      const mockDessertData = `// Quiz data that can be dynamically updated
-export const quizData = {
-  totalQuestions: 9,
-  questions: [
-    { id: 1, question: 'How do you spell this word?', options: ['Macaron', 'Maccaron', 'Macaroon', 'Maccaroon'], correctAnswer: 0 },
-    { id: 2, question: 'How do you spell this word?', options: ['Souffle', 'Suflee', 'Sufle', 'Soufle'], correctAnswer: 0 },
-    { id: 3, question: 'How do you spell this word?', options: ['Ecliar', 'Eclair', 'Eclaire', 'Ecclair'], correctAnswer: 1 },
-    { id: 4, question: 'How do you spell this word?', options: ['Tiramisu', 'Tiramesu', 'Tiramasu', 'Tiramassu'], correctAnswer: 0 },
-    { id: 5, question: 'How do you spell this word?', options: ['Cannolli', 'Canoli', 'Cannoli', 'Canolli'], correctAnswer: 2 },
-    { id: 6, question: 'How do you spell this word?', options: ['Baklava', 'Baklawa', 'Baclava', 'Baklave'], correctAnswer: 0 },
-    { id: 7, question: 'How do you spell this word?', options: ['Proffiterole', 'Profiterole', 'Profiterol', 'Profiteroll'], correctAnswer: 1 },
-    { id: 8, question: 'How do you spell this word?', options: ['Pavolva', 'Pavlovae', 'Pavlova', 'Pavllova'], correctAnswer: 2 },
-    { id: 9, question: 'How do you spell this word?', options: ['Chifon', 'Chiffan', 'Chiffonn', 'Chiffon'], correctAnswer: 3 },
-  ],
-};
-
-export type QuizQuestion = typeof quizData.questions[number];`;
-
-      // Save the mock data to the quiz file
-      const response = await fetch('/api/save-quiz-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quizData: mockDessertData }),
-      });
-      
-      if (response.ok) {
-        console.log('Quiz reset successfully to desserts');
-        // The quiz data file has been updated with mock dessert data
-      } else {
-        console.error('Failed to reset quiz');
-      }
-    } catch (error) {
-      console.error('Error resetting quiz:', error);
-    } finally {
-      setIsGeneratingQuiz(false);
-    }
-  };
+  const [currentTodayTheme, setCurrentTodayTheme] = useState<string>('Desserts');
 
   return (
     <div className={`theme-${theme} min-h-screen relative`}>
@@ -267,18 +107,6 @@ export type QuizQuestion = typeof quizData.questions[number];`;
               Night
             </button>
             <button
-              onClick={() => setIsNewDayModalOpen(true)}
-              className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-green-500 text-white hover:bg-green-600 shadow-lg"
-            >
-              New Day
-            </button>
-            <button
-              onClick={handleResetTheme}
-              className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-gray-400 text-white hover:bg-gray-500 shadow-lg"
-            >
-              Reset Today Theme
-            </button>
-            <button
               onClick={() => setIsEditGameDataOpen(true)}
               className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-purple-500 text-white hover:bg-purple-600 shadow-lg"
             >
@@ -342,7 +170,9 @@ export type QuizQuestion = typeof quizData.questions[number];`;
       {/* Edit Game Data Modal */}
       {isEditGameDataOpen && (
         <EditGameDataModal 
-          onClose={() => setIsEditGameDataOpen(false)} 
+          onClose={() => setIsEditGameDataOpen(false)}
+          onTodayThemeChange={setCurrentTodayTheme}
+          currentTodayTheme={currentTodayTheme}
         />
       )}
 
@@ -351,7 +181,7 @@ export type QuizQuestion = typeof quizData.questions[number];`;
           games={games} 
           onGameSelect={handleGameSelect} 
           theme={theme} 
-          todayTheme={capitalizeWords(lastNewDaySubmission || 'Desserts')}
+          todayTheme={currentTodayTheme}
         />
       ) : (
         <GameDetail game={selectedGame} onBack={handleBackToHome} theme={theme} />

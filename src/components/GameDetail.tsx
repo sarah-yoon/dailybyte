@@ -1,50 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Game } from '../App';
+import { Game, Theme } from '../types';
 import { ArrowLeft } from 'lucide-react';
 import SpellingWaspGame from './SpellingWaspGame';
-
-const getTitleColor = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'text-orange-500';
-    case 'morning':
-      return 'text-blue-500';
-    case 'noon':
-      return 'text-sky-700';
-    case 'afternoon':
-      return 'text-sky-600';
-    case 'sunset':
-      return 'text-orange-800';
-    case 'night':
-      return 'text-purple-200';
-    default:
-      return 'text-gray-800';
-  }
-};
-
-const getPlayButtonBg = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700';
-    case 'morning':
-      return 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700';
-    case 'noon':
-      return 'bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700';
-    case 'afternoon':
-      return 'bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600';
-    case 'sunset':
-      return 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700';
-    case 'night':
-      return 'bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700';
-    default:
-      return 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600';
-  }
-};
 
 interface GameDetailProps {
   game: Game | null;
   onBack: () => void;
-  theme: string;
+  theme: Theme;
 }
 
 const GameDetail: React.FC<GameDetailProps> = ({ game, onBack, theme }) => {

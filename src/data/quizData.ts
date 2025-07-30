@@ -1,5 +1,7 @@
+import { QuizData } from '../types';
+
 // Quiz data that can be dynamically updated
-export const quizData = {
+export const quizData: QuizData = {
   totalQuestions: 9,
   questions: [
     { id: 1, question: 'How do you spell this word?', options: ['Macaron', 'Maccaron', 'Macaroon', 'Maccaroon'], correctAnswer: 0 },
@@ -14,4 +16,4 @@ export const quizData = {
   ],
 };
 
-export type QuizQuestion = typeof quizData.questions[number];
+export type { QuizQuestion } from '../types';

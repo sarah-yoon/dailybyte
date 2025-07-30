@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Game } from '../App';
-import { Play, Users, Clock, Star } from 'lucide-react';
+import { Game, Theme } from '../types';
+import { Play } from 'lucide-react';
 
 interface GameCardProps {
   game: Game;
   onClick: () => void;
   delay: number;
-  theme: string;
+  theme: Theme;
   direction: 'up' | 'down' | null;
   scrolling: boolean;
   scrollVelocity: number;
@@ -14,7 +14,7 @@ interface GameCardProps {
   isInFocus?: boolean;
 }
 
-const getTitleColor = (theme: string) => {
+const getTitleColor = (theme: Theme) => {
   switch (theme) {
     case 'sunrise':
       return 'text-orange-700';
@@ -33,7 +33,7 @@ const getTitleColor = (theme: string) => {
   }
 };
 
-const getTitleHoverColor = (theme: string) => {
+const getTitleHoverColor = (theme: Theme) => {
   switch (theme) {
     case 'sunrise':
       return 'hover:text-orange-500';
@@ -52,26 +52,7 @@ const getTitleHoverColor = (theme: string) => {
   }
 };
 
-const getMainCardBg = (theme: string) => {
-  switch (theme) {
-    case 'sunrise':
-      return 'linear-gradient(135deg, #fffaf6 0%, #fff2e6 100%)';
-    case 'morning':
-      return 'linear-gradient(135deg, #fafdff 0%, #f2f8ff 100%)';
-    case 'noon':
-      return 'linear-gradient(135deg, #fcfdff 0%, #f4f8ff 100%)';
-    case 'afternoon':
-      return 'linear-gradient(135deg, #e6f3ff 0%, #fff2e6 100%)';
-    case 'sunset':
-      return 'linear-gradient(135deg, #fff5e6 0%, #ffe6e6 100%)';
-    case 'night':
-      return 'linear-gradient(135deg, #b8aee8 0%, #d1c4f6 100%)'; // lighter, soft purple
-    default:
-      return 'linear-gradient(135deg, #fffaf6 0%, #fff2e6 100%)';
-  }
-};
-
-const getMainCardBorder = (theme: string) => {
+const getMainCardBorder = (theme: Theme) => {
   switch (theme) {
     case 'sunrise':
       return '#ffc285'; // medium orange
@@ -90,7 +71,7 @@ const getMainCardBorder = (theme: string) => {
   }
 };
 
-const getButtonBg = (theme: string) => {
+const getButtonBg = (theme: Theme) => {
   switch (theme) {
     case 'sunrise':
       return 'bg-orange-600 hover:bg-orange-700';
@@ -109,7 +90,7 @@ const getButtonBg = (theme: string) => {
   }
 };
 
-const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direction, scrolling, scrollVelocity, isStacked = false, isInFocus = false }) => {
+const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direction, scrolling, isStacked = false, isInFocus = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const offsetY = scrolling
@@ -117,15 +98,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, onClick, delay, theme, direct
       ? 40
       : -40
     : 0;
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case 'easy': return 'text-green-600 bg-green-100';
-      case 'medium': return 'text-orange-600 bg-orange-100';
-      case 'hard': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
 
   const handleCardClick = () => {
     if (isStacked) return; // Prevent interaction with stacked cards
