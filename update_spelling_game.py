@@ -7,12 +7,15 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-try:
-    load_dotenv()
-    openai.api_key = os.getenv('OPENAI_API_KEY')
-except:
-    # Fallback: set API key directly for testing
-    openai.api_key = "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"
+load_dotenv()
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Check if API key is available
+if not openai.api_key:
+    print("ERROR: OPENAI_API_KEY not found in environment variables")
+    print("Please create a .env file with your OpenAI API key:")
+    print("OPENAI_API_KEY=your_api_key_here")
+    sys.exit(1)
 
 def generate_spelling_quiz(theme_word):
     """

@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 
-console.log('🚀 Starting development servers...\n');
+console.log('Starting development servers...\n');
 
 // Start Express server
 const expressServer = spawn('node', ['server.cjs'], {

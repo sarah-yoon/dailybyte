@@ -128,11 +128,11 @@ function App() {
       });
       
       if (response.ok) {
-        console.log('✅ Quiz generated successfully for theme:', newDayText);
+        console.log('Quiz generated successfully for theme:', newDayText);
         // The Python script will have updated the quiz data file
         // Vite's hot module replacement should automatically reload the component
       } else {
-        console.error('❌ Failed to generate quiz');
+        console.error('Failed to generate quiz');
       }
     } catch (error) {
       console.error('Error generating quiz:', error);
@@ -155,20 +155,39 @@ function App() {
     setLastNewDaySubmission('');
     
     try {
-      // Call the Python script to reset quiz data back to desserts
-      const response = await fetch('/api/generate-quiz', {
+      // Mock dessert quiz data
+      const mockDessertData = `// Quiz data that can be dynamically updated
+export const quizData = {
+  totalQuestions: 9,
+  questions: [
+    { id: 1, question: 'How do you spell this word?', options: ['Macaron', 'Maccaron', 'Macaroon', 'Maccaroon'], correctAnswer: 0 },
+    { id: 2, question: 'How do you spell this word?', options: ['Souffle', 'Suflee', 'Sufle', 'Soufle'], correctAnswer: 0 },
+    { id: 3, question: 'How do you spell this word?', options: ['Ecliar', 'Eclair', 'Eclaire', 'Ecclair'], correctAnswer: 1 },
+    { id: 4, question: 'How do you spell this word?', options: ['Tiramisu', 'Tiramesu', 'Tiramasu', 'Tiramassu'], correctAnswer: 0 },
+    { id: 5, question: 'How do you spell this word?', options: ['Cannolli', 'Canoli', 'Cannoli', 'Canolli'], correctAnswer: 2 },
+    { id: 6, question: 'How do you spell this word?', options: ['Baklava', 'Baklawa', 'Baclava', 'Baklave'], correctAnswer: 0 },
+    { id: 7, question: 'How do you spell this word?', options: ['Proffiterole', 'Profiterole', 'Profiterol', 'Profiteroll'], correctAnswer: 1 },
+    { id: 8, question: 'How do you spell this word?', options: ['Pavolva', 'Pavlovae', 'Pavlova', 'Pavllova'], correctAnswer: 2 },
+    { id: 9, question: 'How do you spell this word?', options: ['Chifon', 'Chiffan', 'Chiffonn', 'Chiffon'], correctAnswer: 3 },
+  ],
+};
+
+export type QuizQuestion = typeof quizData.questions[number];`;
+
+      // Save the mock data to the quiz file
+      const response = await fetch('/api/save-quiz-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ theme: 'Desserts' }),
+        body: JSON.stringify({ quizData: mockDessertData }),
       });
       
       if (response.ok) {
-        console.log('✅ Quiz reset successfully to desserts');
-        // The Python script will have updated the SpellingWaspGame.tsx file
+        console.log('Quiz reset successfully to desserts');
+        // The quiz data file has been updated with mock dessert data
       } else {
-        console.error('❌ Failed to reset quiz');
+        console.error('Failed to reset quiz');
       }
     } catch (error) {
       console.error('Error resetting quiz:', error);

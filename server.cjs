@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // API routes
-//app.use('/api', express.Router());
+app.use('/api', express.Router());
 
 // API endpoint to generate quiz data
 app.post('/api/generate-quiz', async (req, res) => {
@@ -28,7 +28,8 @@ app.post('/api/generate-quiz', async (req, res) => {
   try {
     // Call the Python script with the theme
     const pythonProcess = spawn('python', ['update_spelling_game.py'], {
-      stdio: ['pipe', 'pipe', 'pipe']
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env } // Pass all environment variables to Python script
     });
 
     // Send the theme to the Python script
@@ -108,6 +109,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Express server running on http://0.0.0.0:${PORT}`);
-  console.log('📡 API endpoint: POST /api/generate-quiz');
+  console.log(`Express server running on http://0.0.0.0:${PORT}`);
+  console.log('API endpoint: POST /api/generate-quiz');
 }); 

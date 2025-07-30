@@ -5,9 +5,14 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Step 1: Set your GPT-4o API key from environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Check if API key is available
+if not openai.api_key:
+    print("ERROR: OPENAI_API_KEY not found in environment variables")
+    print("Please create a .env file with your OpenAI API key:")
+    print("OPENAI_API_KEY=your_api_key_here")
+    sys.exit(1)
 
 def generate_spelling_quiz(theme_word):
     """
